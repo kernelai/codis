@@ -4,6 +4,7 @@
 package models
 
 import (
+	etcdclientv3 "github.com/CodisLabs/codis/pkg/models/etcdv3"
 	"time"
 
 	"github.com/CodisLabs/codis/pkg/models/etcd"
@@ -34,6 +35,9 @@ func NewClient(coordinator string, addrlist string, auth string, timeout time.Du
 		return zkclient.New(addrlist, auth, timeout)
 	case "etcd":
 		return etcdclient.New(addrlist, auth, timeout)
+	case "etcdv3":
+		return etcdclientv3.New(addrlist, auth, timeout)
+
 	case "fs", "filesystem":
 		return fsclient.New(addrlist)
 	}

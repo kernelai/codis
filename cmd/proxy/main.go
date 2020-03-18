@@ -31,7 +31,7 @@ import (
 func main() {
 	const usage = `
 Usage:
-	codis-proxy [--ncpu=N [--max-ncpu=MAX]] [--config=CONF] [--log=FILE] [--log-level=LEVEL] [--host-admin=ADDR] [--host-proxy=ADDR] [--dashboard=ADDR|--zookeeper=ADDR [--zookeeper-auth=USR:PWD]|--etcd=ADDR [--etcd-auth=USR:PWD]|--filesystem=ROOT|--fillslots=FILE] [--ulimit=NLIMIT] [--pidfile=FILE] [--product_name=NAME] [--product_auth=AUTH] [--session_auth=AUTH]
+    codis-proxy [--ncpu=N [--max-ncpu=MAX]] [--config=CONF] [--log=FILE] [--log-level=LEVEL] [--host-admin=ADDR] [--host-proxy=ADDR] [--dashboard=ADDR|--zookeeper=ADDR [--zookeeper-auth=USR:PWD]|--etcd=ADDR [--etcd-auth=USR:PWD]|--etcdv3=ADDR [--etcd-auth=USR:PWD]|--filesystem=ROOT|--fillslots=FILE] [--ulimit=NLIMIT] [--pidfile=FILE] [--product_name=NAME] [--product_auth=AUTH] [--session_auth=AUTH]
 	codis-proxy  --default-config
 	codis-proxy  --version
 
@@ -146,6 +146,13 @@ Options:
 	case d["--etcd"] != nil:
 		coordinator.name = "etcd"
 		coordinator.addr = utils.ArgumentMust(d, "--etcd")
+		if d["--etcd-auth"] != nil {
+			coordinator.auth = utils.ArgumentMust(d, "--etcd-auth")
+		}
+
+	case d["--etcdv3"] != nil:
+		coordinator.name = "etcdv3"
+		coordinator.addr = utils.ArgumentMust(d, "--etcdv3")
 		if d["--etcd-auth"] != nil {
 			coordinator.auth = utils.ArgumentMust(d, "--etcd-auth")
 		}

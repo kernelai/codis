@@ -56,7 +56,7 @@ func init() {
 func main() {
 	const usage = `
 Usage:
-	codis-fe [--ncpu=N] [--log=FILE] [--log-level=LEVEL] [--assets-dir=PATH] [--pidfile=FILE] (--dashboard-list=FILE|--zookeeper=ADDR [--zookeeper-auth=USR:PWD]|--etcd=ADDR [--etcd-auth=USR:PWD]|--filesystem=ROOT) --listen=ADDR
+    codis-fe [--ncpu=N] [--log=FILE] [--log-level=LEVEL] [--assets-dir=PATH] [--pidfile=FILE] (--dashboard-list=FILE|--zookeeper=ADDR [--zookeeper-auth=USR:PWD]|--etcd=ADDR [--etcd-auth=USR:PWD]|--etcdv3=ADDR [--etcd-auth=USR:PWD]|--filesystem=ROOT) --listen=ADDR
 	codis-fe  --version
 
 Options:
@@ -147,6 +147,13 @@ Options:
 		case d["--etcd"] != nil:
 			coordinator.name = "etcd"
 			coordinator.addr = utils.ArgumentMust(d, "--etcd")
+			if d["--etcd-auth"] != nil {
+				coordinator.auth = utils.ArgumentMust(d, "--etcd-auth")
+			}
+
+		case d["--etcdv3"] != nil:
+			coordinator.name = "etcdv3"
+			coordinator.addr = utils.ArgumentMust(d, "--etcdv3")
 			if d["--etcd-auth"] != nil {
 				coordinator.auth = utils.ArgumentMust(d, "--etcd-auth")
 			}
