@@ -38,6 +38,7 @@ product_auth = ""
 
 # Set bind address for admin(rpc), tcp only.
 admin_addr = "0.0.0.0:18080"
+pb_addr = "0.0.0.0:28080"
 
 # Set arguments for data migration (only accept 'sync' & 'semi-async').
 migration_method = "semi-async"
@@ -68,6 +69,7 @@ type Config struct {
 	CoordinatorAuth string `toml:"coordinator_auth" json:"coordinator_auth"`
 
 	AdminAddr string `toml:"admin_addr" json:"admin_addr"`
+	PbAddr		string `toml:"pb_addr" json:"pb_addr"`
 
 	HostAdmin string `toml:"-" json:"-"`
 
@@ -130,6 +132,9 @@ func (c *Config) Validate() error {
 	}
 	if c.AdminAddr == "" {
 		return errors.New("invalid admin_addr")
+	}
+	if c.PbAddr == "" {
+		return errors.New("invalid pb_addr")
 	}
 	if c.ProductName == "" {
 		return errors.New("invalid product_name")

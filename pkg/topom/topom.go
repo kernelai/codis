@@ -53,6 +53,7 @@ type Topom struct {
 	managerOn bool `json:"manager_on"`
 
 	ladmin net.Listener
+	lpb net.Listener
 
 	action struct {
 		redisp *redis.Pool
@@ -152,6 +153,18 @@ func (s *Topom) setup(config *Config) error {
 		return errors.Trace(err)
 	} else {
 		s.ladmin = l
+
+		x, err := utils.ReplaceUnspecifiedIP("tcp", l.Addr().String(), s.config.HostAdmin)
+		if err != nil {
+			return err
+		}
+		s.model.AdminAddr = x
+	}
+
+	if l, err := net.Listen("tcp", config.PbAddr); err != nil {
+		return errors.Trace(err)
+	} else {
+		s.lpb = l
 
 		x, err := utils.ReplaceUnspecifiedIP("tcp", l.Addr().String(), s.config.HostAdmin)
 		if err != nil {
