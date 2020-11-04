@@ -207,6 +207,10 @@ func (s *Topom) createMeta(name string, num, id int) (int, error) {
 		tid = id
 	} else {
 		tid = ctx.tableMeta.Id
+		// don't create table 0
+		if tid == 0 {
+			tid = 1
+		}
 	}
 	for _, t := range ctx.table {
 		if name == t.Name {
